@@ -1,35 +1,15 @@
 <script setup>
-import { ref, reactive, onMounted, computed} from "vue"
+import { ref, reactive} from "vue"
 import Alerta from './components/Alerta.vue'
+import Spinner from './components/Spinner.vue'
+import useCripto from './composables/useCripto'
 
-const monedas = ref([
-      { codigo: 'USD', texto: 'Dolar de Estados Unidos'},
-      { codigo: 'MXN', texto: 'Peso Mexicano'},
-      { codigo: 'EUR', texto: 'Euro'},
-      { codigo: 'GBP', texto: 'Libra Esterlina'},
-])
+const {  monedas, cryptomonedas, cargando, cotizacion, mostrarResultado, obtenerCotizacion } = useCripto()
 
-const cryptomonedas = ref([]);
 const error = ref('');
-
 const cotizar = reactive({
     moneda: '',
     criptomoneda: ''
-})
-
-const mostrarResultado = computed(() =>{
-    return Object.values(cotizacion.value).length > 0;
-})
-
-const cotizacion = ref({});
-
-console.log(cotizacion);
-
-onMounted(()=>{
-const url = "https://min-api.cryptocompare.com/data/top/totalvolfull?limit=10&tsym=USD";
-fetch(url)
-    .then(respuesta => respuesta.json())
-    .then(({Data}) => cryptomonedas.value = Data)
 })
 
 const cotizarCripto = () => {
@@ -38,25 +18,11 @@ const cotizarCripto = () => {
     if(Object.values(cotizar).includes('')){
         error.value = 'Todos los campos son obligatorios'
         return
-
-
     }
+
     error.value = ''
-    obtenerCotizacion();
+    obtenerCotizacion(cotizar);
 
-}
-
-const obtenerCotizacion = async () =>{
-    
-    const { moneda, criptomoneda } = cotizar
-    const url = `https://min-api.cryptocompare.com/data/pricemultifull?fsyms=${criptomoneda}&tsyms=${moneda}`
-    
-    const respuesta = await fetch(url)
-    const data = await respuesta.json()
-
-    cotizacion.value = data.DISPLAY[criptomoneda][moneda]
-
-    console.log(data.DISPLAY[criptomoneda][moneda]);
 }
 </script>
 
@@ -106,6 +72,10 @@ const obtenerCotizacion = async () =>{
 
                 <input type="submit" value="Cotizar" />
             </form>
+
+            <Spinner
+                v-if="cargando"
+            />
             
             <div 
             v-if="mostrarResultado"
