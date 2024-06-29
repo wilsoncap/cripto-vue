@@ -25,16 +25,30 @@ fetch(url)
         <div class="contenido">
             <form class="formulario">
                 <div class="campo">
-                <label for="moneda">Moneda:</label>
-                <select id="moneda">
-                    <option value="">-- Selecciona --</option>
-                    <option 
-                    v-for="moneda in monedas" 
-                    :key="moneda.codigo"
-                    :value="moneda.codigo"
-                    >{{ moneda.texto }}</option>
-                </select>
-            </div>
+                    <label for="moneda">Moneda:</label>
+                    <select id="moneda">
+                        <option value="">-- Selecciona --</option>
+                        <option 
+                        v-for="moneda in monedas" 
+                        :key="moneda.codigo"
+                        :value="moneda.codigo"
+                        >{{ moneda.texto }}</option>
+                    </select>
+                </div>
+
+                <div class="campo">
+                    <label for="cripto">Criptomoneda:</label>
+                    <select id="cripto">
+                        <option value="">-- Selecciona --</option>
+                        <option 
+                        v-for="criptomoneda in cryptomonedas" 
+                        :key="criptomoneda.CoinInfo.id"
+                        :value="criptomoneda.CoinInfo.Name"
+                        >{{ criptomoneda.CoinInfo.FullName }}</option>
+                    </select>
+                </div>
+
+                <input type="submit" value="Cotizar" />
             </form>
             
         </div>
