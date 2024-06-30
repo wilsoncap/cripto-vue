@@ -2,6 +2,7 @@
 import { ref, reactive} from "vue"
 import Alerta from './components/Alerta.vue'
 import Spinner from './components/Spinner.vue'
+import Cotizacion from './components/Cotizacion.vue'
 import useCripto from './composables/useCripto'
 
 const {  monedas, cryptomonedas, cargando, cotizacion, mostrarResultado, obtenerCotizacion } = useCripto()
@@ -73,13 +74,10 @@ const cotizarCripto = () => {
                 <input type="submit" value="Cotizar" />
             </form>
 
-            <Spinner
-                v-if="cargando"
-            />
+            <Spinner v-if="cargando"/>
+            <Cotizacion v-if="mostrarResultado" :cotizacion="cotizacion"/>
             
-            <div 
-            v-if="mostrarResultado"
-            class="contenedor-resultado">
+            <!-- <div v-if="mostrarResultado" class="contenedor-resultado">
                 <h2>Cotización</h2>
 
                 <div class="resultado">
@@ -93,7 +91,7 @@ const cotizarCripto = () => {
                         <p>Ultima Actualización: <span>{{ cotizacion.LASTUPDATE }}</span></p>
                     </div>
                 </div>
-            </div>
+            </div> -->
         </div>
     </div>
 </template>
